@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 int board[4][4] = {
     {0, 0, 1, 0},
     {0, 4, 0, 0},
@@ -40,24 +39,39 @@ void fill_number()
 
 void move_cursor(char c)
 {
-	char ch = c; // «aö??¶q
-    if (ch == 'W' || ch == 'w') {
-        if (cur_r > 0) cur_r--;
+    // «O¦s²¾°Êªº¤è¦V
+    int dr = 0, dc = 0;
+
+    if (c == 'W' || c == 'w') {
+        dr = -1;  // ¦V¤W²¾
     }
-    else if (ch == 'S' || ch == 's') {
-        if (cur_r < 3) cur_r++;
+    else if (c == 'S' || c == 's') {
+        dr = 1;   // ¦V¤U²¾
     }
-    else if (ch == 'A' || ch == 'a') {
-        if (cur_c > 0) cur_c--;
+    else if (c == 'A' || c == 'a') {
+        dc = -1;  // ¦V¥ª²¾
     }
-    else if (ch == 'D' || ch == 'd') {
-        if (cur_c < 3) cur_c++;
+    else if (c == 'D' || c == 'd') {
+        dc = 1;   // ¦V¥k²¾
     }
-    return;
-    /* TODO: Move the cursor up, down, to the left or to the right.
-             Remember to check if the cursor is moving out of bound.
-    */
+
+    // ¹Á¸ÕªuµÛµ¹©wªº¤è¦V²¾°Ê¥ú¼Ð¡A¸õ¹L¤w¸g¶ñ¥R¼Æ¦rªº®æ¤l
+    int new_r = cur_r + dr;
+    int new_c = cur_c + dc;
+
+    // ¦pªG¥Ø¼Ð¦ì¸m¬O¤w¶ñ¥R¼Æ¦rªº®æ¤l¡AÄ~ÄòªuµÛ·í«e¤è¦V²¾°Ê¡Aª½¨ì§ä¨ìªÅ®æ
+    while (new_r >= 0 && new_r < 4 && new_c >= 0 && new_c < 4 && board[new_r][new_c] != 0) {
+        new_r += dr;
+        new_c += dc;
+    }
+
+    // ¦pªG·s¦ì¸m¤´µM¦b´Ñ½L½d³ò¤º¡A´N§ó·s¥ú¼Ð¦ì¸m
+    if (new_r >= 0 && new_r < 4 && new_c >= 0 && new_c < 4) {
+        cur_r = new_r;
+        cur_c = new_c;
+    }
 }
+
 
 bool is_invalid(int i, int j)
 {
@@ -184,7 +198,7 @@ int main()
 {
     char c;
     bool action_ok;
-	int x, y;
+
     initialize();
     while (cin >> c)
     {
